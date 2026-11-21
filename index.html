@@ -1,341 +1,1411 @@
-<script>
-  const fmtPct = (value) => {
-    if (value === null || value === undefined || Number.isNaN(value)) return '--';
-    const sign = value >= 0 ? '+' : '';
-    return `${sign}${value.toFixed(2)}%`;
-  };
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
 
-  const fmtNumber = (value) =>
-    value === null || value === undefined || Number.isNaN(value)
-      ? '--'
-      : Number(value).toLocaleString();
+  <title>全球市場與總經追蹤終端</title>
 
-  async function loadDashboard() {
-    try {
-      const res = await fetch('./data.json?t=' + Date.now());
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js">
+  </script>
 
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`);
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #020617;
+      --panel: #0f172a;
+      --border: #1e293b;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --green: #34d399;
+      --red: #fb7185;
+      --blue: #38bdf8;
+      --yellow: #fbbf24;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      background: var(--bg);
+      color: var(--text);
+      font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Noto Sans TC",
+        sans-serif;
+    }
+
+    main {
+      max-width: 1280px;
+      margin: auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      color: var(--green);
+      font-size: clamp(20px, 3vw, 28px);
+      overflow-wrap: anywhere;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    .muted,
+    .note {
+      color: var(--muted);
+    }
+
+    .note {
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .mono {
+      font-family: ui-monospace, monospace;
+    }
+
+    .up {
+      color: var(--red);
+    }
+
+    .down {
+      color: var(--green);
+    }
+
+    .warning {
+      color: var(--yellow);
+    }
+
+    .grid {
+      display: grid;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .kpis {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .panel {
+      min-width: 0;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--panel);
+    }
+
+    .price {
+      margin: 12px 0;
+      font-size: 25px;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .changes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 12px;
+    }
+
+    .chart {
+      position: relative;
+      height: 270px;
+    }
+
+    .value {
+      margin: 8px 0;
+      font-size: 26px;
+      overflow-wrap: anywhere;
+    }
+
+    .metric {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .badge {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 5px 9px;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      color: var(--yellow);
+      font-size: 12px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .scroll {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th,
+    td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    td {
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+
+    button {
+      padding: 9px 15px;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--text);
+      font: inherit;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      border-color: var(--green);
+    }
+
+    button:disabled {
+      opacity: .5;
+      cursor: wait;
+    }
+
+    #error {
+      padding: 14px;
+      margin-top: 20px;
+      border: 1px solid #9f1239;
+      border-radius: 10px;
+      color: #fda4af;
+      white-space: pre-line;
+      overflow-wrap: anywhere;
+    }
+
+    .details {
+      margin-top: 12px;
+    }
+
+    .details summary {
+      color: var(--muted);
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .details p {
+      margin-bottom: 0;
+    }
+
+    .section-spacing {
+      margin-top: 20px;
+    }
+
+    footer {
+      margin-top: 24px;
+      padding-bottom: 12px;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 1000px) {
+      .kpis {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
-      const data = await res.json();
-
-      document.getElementById('last-updated').textContent =
-        data.last_updated || '--';
-
-      renderKpiCards(data);
-      renderRelativeChart(data);
-      renderYieldChart(data);
-      renderMargin(data);
-      renderFedWatch(data);
-      renderShortInterest(data);
-      renderAnalystReport(data);
-    } catch (error) {
-      console.error('Dashboard load failed:', error);
-      document.getElementById('last-updated').textContent = '載入失敗';
+      .three {
+        grid-template-columns: 1fr;
+      }
     }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 14px;
+      }
+
+      .kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .two {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        padding: 16px;
+      }
+
+      .price {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<main>
+  <header>
+    <div>
+      <h1>MACRO & EQUITY TERMINAL</h1>
+      <div class="muted">
+        市場行情・融資籌碼・美債殖利率追蹤
+      </div>
+    </div>
+
+    <div>
+      <p class="note">
+        資料檔產生時間：
+        <span id="last-updated">載入中…</span>
+      </p>
+
+      <button id="refresh" type="button">
+        重新讀取資料
+      </button>
+    </div>
+  </header>
+
+  <div id="error" role="alert" hidden></div>
+
+  <p class="note">
+    各區塊以自己的市場資料日為準。
+    黃色提示代表沿用前次資料或尚無可用資料。
+    漲跌顏色採紅漲綠跌。
+  </p>
+
+  <section
+    id="kpi-cards"
+    class="grid kpis"
+    aria-label="主要市場行情">
+  </section>
+
+  <section class="grid two">
+    <article class="panel">
+      <h2>近月標準化走勢（各序列首筆 = 100）</h2>
+
+      <div class="chart">
+        <canvas
+          id="relativeChart"
+          role="img"
+          aria-label="主要市場標準化走勢圖">
+        </canvas>
+      </div>
+
+      <p id="history-note" class="note"></p>
+    </article>
+
+    <article class="panel">
+      <h2>美國公債殖利率曲線</h2>
+
+      <div id="yield-spread" class="badge">
+        10Y−2Y 利差：--
+      </div>
+
+      <div class="chart">
+        <canvas
+          id="yieldChart"
+          role="img"
+          aria-label="美國公債殖利率曲線">
+        </canvas>
+      </div>
+
+      <p id="yield-note" class="note"></p>
+
+      <details id="yield-details" class="details" hidden>
+        <summary>更新明細</summary>
+        <p id="yield-detail-text" class="note"></p>
+      </details>
+    </article>
+  </section>
+
+  <section class="grid three">
+    <article class="panel">
+      <h2>台灣上市市場融資資料</h2>
+
+      <div id="margin-status" class="badge">
+        載入中…
+      </div>
+
+      <div class="metric">
+        <div class="muted">融資餘額（億元）</div>
+        <div id="margin-bal" class="value mono">--</div>
+      </div>
+
+      <div class="metric">
+        <div class="muted">該資料日單日增減（億元）</div>
+        <div id="margin-diff" class="value mono">--</div>
+      </div>
+
+      <div class="metric">
+        <div class="muted">估算融資維持率</div>
+        <div id="margin-ratio" class="value mono">--</div>
+      </div>
+
+      <p id="margin-date" class="note"></p>
+      <p id="margin-note" class="note"></p>
+
+      <details id="margin-details" class="details" hidden>
+        <summary>更新明細</summary>
+        <p id="margin-detail-text" class="note"></p>
+      </details>
+    </article>
+
+    <article class="panel">
+      <h2 id="fed-title">聯準會利率機率</h2>
+
+      <div id="fed-status" class="badge">
+        尚無已驗證資料
+      </div>
+
+      <p id="implied-bps" class="note">
+        隱含變動：-- bps
+      </p>
+
+      <div id="fed-chart-wrap" class="chart" hidden>
+        <canvas
+          id="fedChart"
+          role="img"
+          aria-label="聯準會利率決策機率">
+        </canvas>
+      </div>
+
+      <p id="fed-note" class="note"></p>
+    </article>
+
+    <article class="panel">
+      <h2>重點科技股未平倉空單</h2>
+
+      <div id="short-status" class="badge">
+        尚無已驗證資料
+      </div>
+
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">代號</th>
+              <th scope="col">佔流通股</th>
+              <th scope="col">回補天數</th>
+              <th scope="col">趨勢</th>
+            </tr>
+          </thead>
+          <tbody id="short-table"></tbody>
+        </table>
+      </div>
+
+      <p class="note">
+        此欄位不直接等同於機構投資人的空單部位。
+      </p>
+    </article>
+  </section>
+
+  <section class="panel section-spacing">
+    <h2>機構研究與配置觀點</h2>
+
+    <div id="analyst-status" class="badge">
+      尚無已驗證資料
+    </div>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">研究機構</th>
+            <th scope="col">估值觀點</th>
+            <th scope="col">預估 P/E</th>
+            <th scope="col">防禦配置</th>
+            <th scope="col">策略摘要</th>
+          </tr>
+        </thead>
+        <tbody id="analyst-table"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="note">
+    <p>
+      「資料檔產生時間」不代表所有市場數字都已更新。
+      沿用前次資料時，會保留原本的市場資料日。
+      資料取得失敗不會被視為零，也不會直接被判定為休市。
+    </p>
+
+    <p>
+      「重新讀取資料」只會讀取網站已發布的 data.json，
+      不會啟動 GitHub Actions 或後端抓取。
+      本頁僅呈現資料，不構成投資建議。
+    </p>
+  </footer>
+</main>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+
+const charts = new Map();
+
+const markets = {
+  TWII: {
+    label: "台灣加權指數",
+    color: "#34d399"
+  },
+  TSMC: {
+    label: "台積電（2330）",
+    color: "#fb7185"
+  },
+  SOX: {
+    label: "費城半導體",
+    color: "#38bdf8"
+  },
+  NVDA: {
+    label: "NVIDIA",
+    color: "#a78bfa"
+  },
+  IXIC: {
+    label: "那斯達克",
+    color: "#fbbf24"
+  }
+};
+
+
+function numeric(value) {
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : null;
   }
 
-  function renderKpiCards(data) {
-    const container = document.getElementById('kpi-cards');
-    const labels = {
-      TWII: '台灣加權指數',
-      TSMC: '台積電 (2330)',
-      SOX: '費城半導體',
-      NVDA: 'NVIDIA',
-      IXIC: '那斯達克',
-    };
+  if (typeof value === "string" && value.trim() !== "") {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : null;
+  }
 
-    container.innerHTML = '';
+  return null;
+}
 
-    for (const [key, value] of Object.entries(data.market_performance || {})) {
-      const dailyColor = value.daily_pct >= 0 ? 'text-rose-400' : 'text-emerald-400';
-      const monthColor = value.month_pct >= 0 ? 'text-rose-400' : 'text-emerald-400';
 
-      container.insertAdjacentHTML(
-        'beforeend',
+function format(value, digits = 2) {
+  const parsed = numeric(value);
+
+  if (parsed === null) {
+    return "--";
+  }
+
+  return parsed.toLocaleString("zh-TW", {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits
+  });
+}
+
+
+function signed(value, unit = "") {
+  const parsed = numeric(value);
+
+  if (parsed === null) {
+    return "--";
+  }
+
+  return `${parsed > 0 ? "+" : ""}${format(parsed)}${unit}`;
+}
+
+
+function movementClass(value) {
+  const parsed = numeric(value);
+
+  if (parsed === null || parsed === 0) {
+    return "muted";
+  }
+
+  return parsed > 0 ? "up" : "down";
+}
+
+
+function escapeHTML(value) {
+  return String(value ?? "--").replace(
+    /[&<>"']/g,
+    character => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[character]
+  );
+}
+
+
+function isCached(block) {
+  return block?.is_cached === true ||
+    block?.status === "cached";
+}
+
+
+function displayTime(value) {
+  if (!value) {
+    return "未提供";
+  }
+
+  const text = String(value);
+
+  // 新 Python 輸出含時區的 ISO 時間。
+  // 舊版無明確時區的字串直接顯示，避免猜測。
+  if (!/T.*(?:Z|[+-]\d{2}:\d{2})$/i.test(text)) {
+    return text;
+  }
+
+  const date = new Date(text);
+
+  if (Number.isNaN(date.getTime())) {
+    return text;
+  }
+
+  return date.toLocaleString("zh-TW", {
+    timeZone: "Asia/Taipei",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false
+  }) + "（台灣時間）";
+}
+
+
+function setDetails(containerId, textId, lines) {
+  const content = lines.filter(Boolean).join("；");
+
+  $(containerId).hidden = !content;
+  $(textId).textContent = content;
+}
+
+
+function destroyChart(id) {
+  if (charts.has(id)) {
+    charts.get(id).destroy();
+    charts.delete(id);
+  }
+}
+
+
+function drawChart(id, configuration) {
+  destroyChart(id);
+
+  if (typeof Chart === "undefined") {
+    throw new Error(
+      "Chart.js 載入失敗，請檢查網路或 CDN。"
+    );
+  }
+
+  charts.set(
+    id,
+    new Chart($(id), configuration)
+  );
+}
+
+
+function chartOptions(percent = false) {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: false,
+    plugins: {
+      legend: {
+        labels: {
+          color: "#cbd5e1"
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: "#94a3b8",
+          maxRotation: 45,
+          autoSkip: true
+        },
+        grid: {
+          color: "rgba(148,163,184,.08)"
+        }
+      },
+      y: {
+        ticks: {
+          color: "#94a3b8",
+          callback: value =>
+            percent ? `${value}%` : value
+        },
+        grid: {
+          color: "rgba(148,163,184,.08)"
+        }
+      }
+    }
+  };
+}
+
+
+function renderKpis(data) {
+  const performance = data.market_performance || {};
+
+  $("kpi-cards").innerHTML = Object.entries(markets).map(
+    ([key, meta]) => {
+      const item = performance[key] || {};
+
+      const hasPrice = numeric(item.price) !== null;
+      const cached = isCached(item);
+
+      const state = !hasPrice
+        ? "尚無可用資料"
+        : cached
+          ? "沿用最後成功資料"
+          : "本次取得成功";
+
+      const statusClass =
+        cached || !hasPrice ? "warning" : "muted";
+
+      const detailLines = [
+        item.last_success_at
+          ? `最後成功取得：${displayTime(item.last_success_at)}`
+          : "",
+        item.last_attempt_at
+          ? `最近嘗試更新：${displayTime(item.last_attempt_at)}`
+          : "",
+        item.last_error
+          ? `更新訊息：${item.last_error}`
+          : ""
+      ].filter(Boolean);
+
+      const detailsHTML = detailLines.length
+        ? `
+          <details class="details">
+            <summary>更新明細</summary>
+            <p class="note">
+              ${escapeHTML(detailLines.join("；"))}
+            </p>
+          </details>
         `
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
-          <div class="text-xs text-slate-400">${labels[key] || key}</div>
-          <div class="text-xl font-bold font-mono mt-1">${fmtNumber(value.price)}</div>
-          <div class="flex justify-between text-xs font-mono mt-2">
-            <span class="${dailyColor}">日 ${fmtPct(value.daily_pct)}</span>
-            <span class="${monthColor}">月 ${fmtPct(value.month_pct)}</span>
+        : "";
+
+      return `
+        <article class="panel">
+          <div class="muted">
+            ${escapeHTML(meta.label)}
           </div>
-        </div>`
-      );
+
+          <div class="price mono">
+            ${format(item.price)}
+          </div>
+
+          <div class="changes mono">
+            <span class="${movementClass(item.daily_pct)}">
+              日 ${signed(item.daily_pct, "%")}
+            </span>
+
+            <span class="${movementClass(item.month_pct)}">
+              近月 ${signed(item.month_pct, "%")}
+            </span>
+          </div>
+
+          <p class="note">
+            交易日：
+            ${escapeHTML(
+              item.last_trade_date || item.data_date
+            )}
+          </p>
+
+          <div class="note ${statusClass}">
+            ${state}
+          </div>
+
+          ${detailsHTML}
+        </article>
+      `;
     }
-  }
+  ).join("");
+}
 
-  function renderRelativeChart(data) {
-    const history = data.normalized_history || {};
-    const dates = history.TWII?.dates || [];
 
-    const dataset = (label, key, color) => ({
-      label,
-      data: history[key]?.values || [],
-      borderColor: color,
-      backgroundColor: 'transparent',
-      tension: 0.3,
-      pointRadius: 0,
+function renderHistory(data) {
+  const history = data.normalized_history || {};
+
+  const entries = Object.entries(markets).filter(
+    ([key]) =>
+      Array.isArray(history[key]?.dates) &&
+      Array.isArray(history[key]?.values) &&
+      history[key].dates.length > 0
+  );
+
+  const allDates = [
+    ...new Set(
+      entries.flatMap(([key]) => history[key].dates)
+    )
+  ];
+
+  const usesFullDates = allDates.every(
+    value => /^\d{4}-\d{2}-\d{2}$/.test(String(value))
+  );
+
+  // 新版完整日期可排序並依日期對齊。
+  // 舊版短日期僅保留原始順序，不推測跨年年份。
+  const labels = usesFullDates
+    ? [...allDates].sort()
+    : allDates;
+
+  const datasets = entries.map(([key, meta]) => {
+    const series = history[key];
+
+    const points = new Map(
+      series.dates.map((date, index) => [
+        date,
+        numeric(series.values[index])
+      ])
+    );
+
+    return {
+      label: isCached(series)
+        ? `${meta.label}（沿用）`
+        : meta.label,
+      data: labels.map(
+        date => points.get(date) ?? null
+      ),
+      borderColor: meta.color,
       borderWidth: 2,
-    });
+      borderDash: isCached(series) ? [5, 4] : [],
+      pointRadius: 0,
+      tension: 0,
+      spanGaps: false
+    };
+  });
 
-    new Chart(document.getElementById('relativeChart'), {
-      type: 'line',
-      data: {
-        labels: dates,
-        datasets: [
-          dataset('加權指數', 'TWII', '#34d399'),
-          dataset('台積電', 'TSMC', '#f43f5e'),
-          dataset('費城半導體', 'SOX', '#38bdf8'),
-          dataset('那斯達克', 'IXIC', '#fbbf24'),
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            labels: { color: '#cbd5e1' },
-          },
-        },
-        scales: {
-          x: {
-            ticks: { color: '#64748b', maxRotation: 0, autoSkip: true },
-            grid: { color: 'rgba(148,163,184,0.08)' },
-          },
-          y: {
-            ticks: { color: '#64748b' },
-            grid: { color: 'rgba(148,163,184,0.08)' },
-          },
-        },
-      },
-    });
+  const cachedSeries = entries
+    .filter(([key]) => isCached(history[key]))
+    .map(([, meta]) => meta.label);
+
+  const notes = [];
+
+  if (!entries.length) {
+    notes.push("尚無走勢資料。");
+  } else {
+    notes.push(
+      "各序列以自己的首筆價格設為 100；" +
+      "起始日可能不同，不代表共同起點報酬。"
+    );
+
+    notes.push(
+      "依日期對齊，缺值不補值；不同市場收盤時點不同。"
+    );
+
+    if (!usesFullDates) {
+      notes.push(
+        "含舊版不完整日期，跨年順序可能不完整；" +
+        "待後端成功更新為 YYYY-MM-DD 後改善。"
+      );
+    }
   }
 
-  function renderYieldChart(data) {
-    const yields = data.treasury_yields || {};
-
-    document.getElementById('yield-spread').textContent =
-      yields.spread_10y_2y == null
-        ? '10Y-2Y 利差: --'
-        : `10Y-2Y 利差: ${yields.spread_10y_2y}%`;
-
-    new Chart(document.getElementById('yieldChart'), {
-      type: 'line',
-      data: {
-        labels: yields.maturities || [],
-        datasets: [
-          {
-            label: '最新殖利率 (%)',
-            data: yields.current || [],
-            borderColor: '#fbbf24',
-            backgroundColor: 'rgba(251,191,36,0.10)',
-            fill: true,
-            tension: 0.3,
-            borderWidth: 2,
-          },
-          {
-            label: '一個月前 (%)',
-            data: yields.one_month_ago || [],
-            borderColor: '#64748b',
-            borderDash: [6, 6],
-            tension: 0.3,
-            pointRadius: 0,
-            borderWidth: 2,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            labels: { color: '#cbd5e1' },
-          },
-        },
-        scales: {
-          x: {
-            ticks: { color: '#64748b' },
-            grid: { color: 'rgba(148,163,184,0.08)' },
-          },
-          y: {
-            ticks: {
-              color: '#64748b',
-              callback: (value) => `${value}%`,
-            },
-            grid: { color: 'rgba(148,163,184,0.08)' },
-          },
-        },
-      },
-    });
+  if (cachedSeries.length) {
+    notes.push(
+      `沿用前次走勢資料：${cachedSeries.join("、")}。`
+    );
   }
 
-  function renderMargin(data) {
-    const margin = data.tw_margin || {};
+  $("history-note").textContent = notes.join(" ");
 
-    document.getElementById('margin-bal').textContent =
-      margin.balance_billion == null
-        ? '資料暫不可用'
-        : fmtNumber(margin.balance_billion);
+  $("history-note").className =
+    cachedSeries.length ? "note warning" : "note";
 
-    const diffElement = document.getElementById('margin-diff');
+  drawChart("relativeChart", {
+    type: "line",
+    data: {
+      labels,
+      datasets
+    },
+    options: chartOptions()
+  });
+}
 
-    if (margin.daily_diff_billion == null) {
-      diffElement.textContent = '--';
-      diffElement.className = 'font-mono font-semibold text-slate-400';
+
+function renderYields(data) {
+  const yields = data.treasury_yields || {};
+
+  const cached = isCached(yields);
+
+  const hasValues =
+    Array.isArray(yields.current) &&
+    yields.current.some(
+      value => numeric(value) !== null
+    );
+
+  $("yield-spread").textContent =
+    `10Y−2Y 利差：${signed(
+      yields.spread_10y_2y,
+      " 個百分點"
+    )}`;
+
+  const state = !hasValues
+    ? "尚無可用資料"
+    : cached
+      ? "沿用最後成功資料"
+      : "本次取得成功";
+
+  const notes = [
+    `市場資料日：${yields.data_date || "未提供"}`,
+    `狀態：${state}`
+  ];
+
+  if (yields.comparison_date) {
+    notes.push(
+      `比較資料日：${yields.comparison_date}`
+    );
+  }
+
+  if (yields.note) {
+    notes.push(yields.note);
+  }
+
+  $("yield-note").textContent = notes.join("；");
+
+  $("yield-note").className =
+    cached || !hasValues ? "note warning" : "note";
+
+  setDetails(
+    "yield-details",
+    "yield-detail-text",
+    [
+      yields.last_success_at
+        ? `最後成功取得：${displayTime(yields.last_success_at)}`
+        : "",
+      yields.last_attempt_at
+        ? `最近嘗試更新：${displayTime(yields.last_attempt_at)}`
+        : "",
+      yields.last_error
+        ? `本次更新訊息：${yields.last_error}`
+        : ""
+    ]
+  );
+
+  const latestLabel = cached
+    ? "最後成功資料（%）"
+    : "本次取得資料（%）";
+
+  const comparisonLabel = yields.comparison_date
+    ? `比較期 ${yields.comparison_date}（%）`
+    : "比較期（日期未提供）";
+
+  drawChart("yieldChart", {
+    type: "line",
+    data: {
+      labels: Array.isArray(yields.maturities)
+        ? yields.maturities
+        : [],
+      datasets: [
+        {
+          label: latestLabel,
+          data: Array.isArray(yields.current)
+            ? yields.current.map(numeric)
+            : [],
+          borderColor: "#fbbf24",
+          backgroundColor: "rgba(251,191,36,.10)",
+          fill: true,
+          tension: 0
+        },
+        {
+          label: comparisonLabel,
+          data: Array.isArray(yields.one_month_ago)
+            ? yields.one_month_ago.map(numeric)
+            : [],
+          borderColor: "#94a3b8",
+          borderDash: [6, 6],
+          tension: 0
+        }
+      ]
+    },
+    options: chartOptions(true)
+  });
+}
+
+
+function renderMargin(data) {
+  const margin = data.tw_margin || {};
+
+  const hasBalance =
+    numeric(margin.balance_billion) !== null;
+
+  const cached = isCached(margin);
+
+  const state = !hasBalance
+    ? "尚無歷史有效資料"
+    : cached
+      ? "沿用最後成功資料"
+      : "本次取得成功";
+
+  $("margin-status").textContent = state;
+
+  $("margin-status").style.color =
+    cached || !hasBalance ? "#fbbf24" : "#34d399";
+
+  $("margin-bal").textContent = hasBalance
+    ? format(margin.balance_billion)
+    : "尚無歷史有效資料";
+
+  $("margin-diff").textContent =
+    signed(margin.daily_diff_billion);
+
+  $("margin-diff").className =
+    `value mono ${movementClass(
+      margin.daily_diff_billion
+    )}`;
+
+  $("margin-ratio").textContent =
+    numeric(margin.est_maintenance_ratio) === null
+      ? "尚無獨立資料"
+      : `${format(margin.est_maintenance_ratio, 1)}%`;
+
+  $("margin-date").textContent =
+    `市場資料日：${margin.data_date || "未提供"}`;
+
+  $("margin-date").className =
+    cached ? "note warning" : "note";
+
+  const notes = [];
+
+  if (cached) {
+    notes.push(
+      "本次未取得可替換的新資料；" +
+      "餘額與單日增減均屬於上述資料日，" +
+      "不代表今天的變化。"
+    );
+  }
+
+  if (margin.note) {
+    notes.push(margin.note);
+  }
+
+  if (!hasBalance) {
+    notes.push(
+      "目前尚未保存可沿用的有效快照；" +
+      "需先由後端成功取得一筆資料。"
+    );
+  }
+
+  $("margin-note").textContent = notes.join(" ");
+
+  setDetails(
+    "margin-details",
+    "margin-detail-text",
+    [
+      margin.last_success_at
+        ? `最後成功取得：${displayTime(margin.last_success_at)}`
+        : "",
+      margin.last_attempt_at
+        ? `最近嘗試更新：${displayTime(margin.last_attempt_at)}`
+        : "",
+      margin.last_error
+        ? `本次更新訊息：${margin.last_error}`
+        : ""
+    ]
+  );
+}
+
+
+// 這只是前端顯示門檻，不是資料真實性的自動驗證。
+// 後端仍須接入真實來源，不能只修改標記來冒充驗證。
+function verified(block) {
+  return Boolean(
+    block &&
+    typeof block === "object" &&
+    !Array.isArray(block) &&
+    block.data_status === "verified" &&
+    typeof block.source === "string" &&
+    block.source.trim() &&
+    typeof block.data_date === "string" &&
+    block.data_date.trim()
+  );
+}
+
+
+function statusText(block) {
+  if (verified(block)) {
+    return (
+      `來源：${block.source}｜` +
+      `資料日：${block.data_date}`
+    );
+  }
+
+  return "未接入已驗證資料；不顯示樣本數值";
+}
+
+
+function itemsOf(block) {
+  if (Array.isArray(block)) {
+    return block;
+  }
+
+  return Array.isArray(block?.items)
+    ? block.items
+    : [];
+}
+
+
+function renderFed(data) {
+  const fed = data.fedwatch_dec || {};
+
+  destroyChart("fedChart");
+
+  $("fed-title").textContent =
+    "聯準會利率機率";
+
+  $("fed-status").textContent =
+    statusText(fed);
+
+  $("fed-chart-wrap").hidden = true;
+
+  $("implied-bps").textContent =
+    "隱含變動：-- bps";
+
+  $("fed-note").textContent =
+    fed.note ||
+    "取得具來源與日期的資料後才顯示機率。";
+
+  if (!verified(fed)) {
+    return;
+  }
+
+  const scenarios = Array.isArray(fed.scenarios)
+    ? fed.scenarios
+    : [];
+
+  const probabilities = Array.isArray(fed.probabilities)
+    ? fed.probabilities.map(numeric)
+    : [];
+
+  const total = probabilities.reduce(
+    (sum, value) => sum + (value ?? 0),
+    0
+  );
+
+  const invalid =
+    !scenarios.length ||
+    scenarios.length !== probabilities.length ||
+    probabilities.some(
+      value => value === null || value < 0 || value > 100
+    ) ||
+    Math.abs(total - 100) > 0.5;
+
+  if (invalid) {
+    $("fed-note").textContent =
+      "機率資料格式錯誤或總和不接近 100%。";
+    return;
+  }
+
+  $("fed-title").textContent =
+    fed.meeting_date || "聯準會利率機率";
+
+  $("implied-bps").textContent =
+    `隱含變動：${signed(
+      fed.implied_rate_change_bps,
+      " bps"
+    )}`;
+
+  $("fed-note").textContent = fed.note || "";
+
+  $("fed-chart-wrap").hidden = false;
+
+  const options = chartOptions(true);
+
+  options.scales.y.min = 0;
+  options.scales.y.max = 100;
+  options.plugins.legend.display = false;
+
+  drawChart("fedChart", {
+    type: "bar",
+    data: {
+      labels: scenarios,
+      datasets: [
+        {
+          label: "機率（%）",
+          data: probabilities,
+          backgroundColor: [
+            "#38bdf8",
+            "#94a3b8",
+            "#fb7185"
+          ],
+          borderRadius: 5
+        }
+      ]
+    },
+    options
+  });
+}
+
+
+function renderTable(
+  bodyId,
+  rows,
+  columns,
+  emptyMessage
+) {
+  const body = $(bodyId);
+  body.replaceChildren();
+
+  const validRows = rows.filter(
+    item =>
+      item &&
+      typeof item === "object" &&
+      !Array.isArray(item)
+  );
+
+  if (!validRows.length) {
+    const row = body.insertRow();
+    const cell = row.insertCell();
+
+    cell.colSpan = columns.length;
+    cell.textContent = emptyMessage;
+    cell.className = "muted";
+
+    return;
+  }
+
+  for (const item of validRows) {
+    const row = body.insertRow();
+
+    for (const column of columns) {
+      row.insertCell().textContent =
+        column(item);
+    }
+  }
+}
+
+
+function renderShort(data) {
+  const block = data.short_interest_top_tech;
+
+  $("short-status").textContent =
+    statusText(block);
+
+  renderTable(
+    "short-table",
+    verified(block) ? itemsOf(block) : [],
+    [
+      item => item.ticker || "--",
+
+      item => numeric(item.short_float_pct) === null
+        ? "--"
+        : `${format(item.short_float_pct)}%`,
+
+      item => numeric(item.days_to_cover) === null
+        ? "--"
+        : `${format(item.days_to_cover, 1)} 天`,
+
+      item => item.trend || "--"
+    ],
+    "尚無已驗證的短倉資料。"
+  );
+}
+
+
+function renderAnalysts(data) {
+  const block = data.analyst_quant_report;
+
+  $("analyst-status").textContent =
+    statusText(block);
+
+  renderTable(
+    "analyst-table",
+    verified(block) ? itemsOf(block) : [],
+    [
+      item => item.institution || "--",
+
+      item => item.tech_valuation_view || "--",
+
+      item => item.target_forward_pe || "--",
+
+      item => numeric(item.defensive_allocation_pct) === null
+        ? "--"
+        : `${format(item.defensive_allocation_pct, 0)}%`,
+
+      item => item.strategy_summary || "--"
+    ],
+    "尚無可查核的研究報告，不展示未經證實的機構觀點。"
+  );
+}
+
+
+async function loadDashboard() {
+  $("refresh").disabled = true;
+  $("refresh").textContent = "讀取中…";
+
+  $("error").hidden = true;
+  $("error").textContent = "";
+
+  const controller = new AbortController();
+
+  const timeout = setTimeout(
+    () => controller.abort(),
+    20000
+  );
+
+  let stage = "fetch";
+
+  try {
+    const response = await fetch(
+      `./data.json?t=${Date.now()}`,
+      {
+        cache: "no-store",
+        signal: controller.signal
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `data.json 讀取失敗：HTTP ${response.status}`
+      );
+    }
+
+    const data = await response.json();
+
+    if (
+      !data ||
+      typeof data !== "object" ||
+      Array.isArray(data)
+    ) {
+      throw new Error(
+        "data.json 最外層必須是 JSON 物件。"
+      );
+    }
+
+    stage = "render";
+
+    $("last-updated").textContent =
+      displayTime(data.last_updated);
+
+    const failures = [];
+
+    const renderers = [
+      ["行情卡片", renderKpis],
+      ["相對走勢", renderHistory],
+      ["美債曲線", renderYields],
+      ["融資資料", renderMargin],
+      ["利率機率", renderFed],
+      ["短倉資料", renderShort],
+      ["機構研究", renderAnalysts]
+    ];
+
+    for (const [name, render] of renderers) {
+      try {
+        render(data);
+      } catch (error) {
+        console.error(name, error);
+
+        failures.push(
+          `${name}：${error.message}`
+        );
+      }
+    }
+
+    if (failures.length) {
+      $("error").textContent =
+        "部分區塊顯示失敗：\n" +
+        failures.join("\n");
+
+      $("error").hidden = false;
+    }
+
+  } catch (error) {
+    console.error(error);
+
+    const alreadyDisplayed =
+      $("last-updated").textContent !== "載入中…" &&
+      $("last-updated").textContent !== "載入失敗";
+
+    if (!alreadyDisplayed) {
+      $("last-updated").textContent =
+        "載入失敗";
+    }
+
+    const retainedMessage = alreadyDisplayed
+      ? " 畫面可能仍保留上次讀取的內容，並未更新。"
+      : "";
+
+    let message;
+
+    if (error.name === "AbortError") {
+      message = "讀取資料逾時，請稍後再試。";
+    } else if (stage === "fetch") {
+      message =
+        `${error.message}。` +
+        "請確認網站同一目錄有有效的 data.json，" +
+        "並透過網站網址開啟本頁。";
     } else {
-      const isPositive = margin.daily_diff_billion >= 0;
-      diffElement.textContent = fmtPct(margin.daily_diff_billion).replace('%', '');
-      diffElement.className = `font-mono font-semibold ${
-        isPositive ? 'text-rose-400' : 'text-emerald-400'
-      }`;
+      message =
+        `畫面更新失敗：${error.message}`;
     }
 
-    const ratio = margin.est_maintenance_ratio;
-    const ratioElement = document.getElementById('margin-ratio');
-    const barElement = document.getElementById('margin-bar');
+    $("error").textContent =
+      message + retainedMessage;
 
-    if (ratio == null) {
-      ratioElement.textContent = '--';
-      barElement.style.width = '0%';
-      barElement.className = 'bg-slate-600 h-full';
-    } else {
-      ratioElement.textContent = Number(ratio).toFixed(1);
-      const width = Math.max(0, Math.min(100, Number(ratio)));
-      barElement.style.width = `${width}%`;
-      barElement.className =
-        ratio < 140
-          ? 'bg-rose-500 h-full'
-          : ratio < 165
-            ? 'bg-amber-500 h-full'
-            : 'bg-emerald-500 h-full';
-    }
+    $("error").hidden = false;
 
-    if (margin.data_date) {
-      document.querySelector(
-        '#margin-bal'
-      ).closest('.bg-slate-950').insertAdjacentHTML(
-        'beforeend',
-        `<div class="text-[10px] text-slate-500 mt-1">資料日：${margin.data_date}</div>`
-      );
-    }
+  } finally {
+    clearTimeout(timeout);
+
+    $("refresh").disabled = false;
+    $("refresh").textContent =
+      "重新讀取資料";
   }
+}
 
-  function renderFedWatch(data) {
-    const fed = data.fedwatch_dec || {};
 
-    document.getElementById('implied-bps').textContent =
-      fed.implied_rate_change_bps == null
-        ? '隱含變動: -- bps'
-        : `隱含變動: ${fed.implied_rate_change_bps} bps`;
+$("refresh").addEventListener(
+  "click",
+  loadDashboard
+);
 
-    new Chart(document.getElementById('fedChart'), {
-      type: 'bar',
-      data: {
-        labels: fed.scenarios || [],
-        datasets: [
-          {
-            label: '市場定價機率 (%)',
-            data: fed.probabilities || [],
-            backgroundColor: ['#38bdf8', '#94a3b8', '#f43f5e'],
-            borderRadius: 6,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: (context) => `${context.parsed.y}%`,
-            },
-          },
-        },
-        scales: {
-          x: {
-            ticks: {
-              color: '#cbd5e1',
-              callback: function (value, index) {
-                const label = this.getLabelForValue(value);
-                return label.length > 10 ? label.slice(0, 10) + '…' : label;
-              },
-            },
-            grid: { display: false },
-          },
-          y: {
-            beginAtZero: true,
-            max: 100,
-            ticks: {
-              color: '#64748b',
-              callback: (value) => `${value}%`,
-            },
-            grid: { color: 'rgba(148,163,184,0.08)' },
-          },
-        },
-      },
-    });
-  }
-
-  function renderShortInterest(data) {
-    const body = document.getElementById('short-table');
-    const items = data.short_interest_top_tech?.items || [];
-
-    body.innerHTML = '';
-
-    if (!items.length) {
-      body.innerHTML = `
-        <tr>
-          <td colspan="4" class="py-4 text-center text-slate-500">資料暫不可用</td>
-        </tr>`;
-      return;
-    }
-
-    items.forEach((item) => {
-      body.insertAdjacentHTML(
-        'beforeend',
-        `
-        <tr>
-          <td class="py-2.5 font-bold text-sky-400">${item.ticker}</td>
-          <td class="py-2.5">${item.short_float_pct}%</td>
-          <td class="py-2.5">${item.days_to_cover} 天</td>
-          <td class="py-2.5 text-slate-300">${item.trend}</td>
-        </tr>`
-      );
-    });
-  }
-
-  function renderAnalystReport(data) {
-    const body = document.getElementById('analyst-table');
-    const items = data.analyst_quant_report?.items || [];
-
-    body.innerHTML = '';
-
-    if (!items.length) {
-      body.innerHTML = `
-        <tr>
-          <td colspan="5" class="p-4 text-center text-slate-500">資料暫不可用</td>
-        </tr>`;
-      return;
-    }
-
-    items.forEach((report) => {
-      body.insertAdjacentHTML(
-        'beforeend',
-        `
-        <tr>
-          <td class="p-3 font-semibold text-slate-200">${report.institution}</td>
-          <td class="p-3">${report.tech_valuation_view}</td>
-          <td class="p-3 font-mono">${report.target_forward_pe}</td>
-          <td class="p-3 font-mono">${report.defensive_allocation_pct}%</td>
-          <td class="p-3 text-slate-300">${report.strategy_summary}</td>
-        </tr>`
-      );
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', loadDashboard);
+document.addEventListener(
+  "DOMContentLoaded",
+  loadDashboard
+);
 </script>
+</body>
+</html>
