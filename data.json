@@ -1,57 +1,113 @@
 {
-  "last_updated": "2026-11-21 23:27:39 CST",
+  "schema_version": 2,
+  "last_updated": "2026-11-21T23:53:05+08:00",
   "market_performance": {
     "TWII": {
+      "symbol": "^TWII",
       "price": 36033.29,
       "daily_pct": -6.23,
-      "month_pct": -22.16
+      "month_pct": -22.16,
+      "data_date": "2026-11-20",
+      "last_trade_date": "2026-11-20",
+      "period_start": "2026-10-20",
+      "return_basis": "未調整收盤價；近月為抓取區間首尾比較",
+      "source": "Yahoo Finance via yfinance",
+      "status": "ok",
+      "is_cached": false,
+      "last_attempt_at": "2026-11-21T23:53:01+08:00",
+      "last_success_at": "2026-11-21T23:53:01+08:00",
+      "last_error": null
     },
     "TSMC": {
+      "symbol": "2330.TW",
       "price": 2000.0,
       "daily_pct": -4.76,
-      "month_pct": -16.84
+      "month_pct": -16.84,
+      "data_date": "2026-11-20",
+      "last_trade_date": "2026-11-20",
+      "period_start": "2026-10-20",
+      "return_basis": "未調整收盤價；近月為抓取區間首尾比較",
+      "source": "Yahoo Finance via yfinance",
+      "status": "ok",
+      "is_cached": false,
+      "last_attempt_at": "2026-11-21T23:53:02+08:00",
+      "last_success_at": "2026-11-21T23:53:02+08:00",
+      "last_error": null
     },
     "SOX": {
+      "symbol": "^SOX",
       "price": 8408.59,
       "daily_pct": -10.73,
-      "month_pct": -26.92
+      "month_pct": -26.92,
+      "data_date": "2026-11-20",
+      "last_trade_date": "2026-11-20",
+      "period_start": "2026-10-21",
+      "return_basis": "未調整收盤價；近月為抓取區間首尾比較",
+      "source": "Yahoo Finance via yfinance",
+      "status": "ok",
+      "is_cached": false,
+      "last_attempt_at": "2026-11-21T23:53:02+08:00",
+      "last_success_at": "2026-11-21T23:53:02+08:00",
+      "last_error": null
     },
     "NVDA": {
+      "symbol": "NVDA",
       "price": 125.53,
       "daily_pct": -14.01,
-      "month_pct": -43.45
+      "month_pct": -43.45,
+      "data_date": "2026-11-20",
+      "last_trade_date": "2026-11-20",
+      "period_start": "2026-10-21",
+      "return_basis": "未調整收盤價；近月為抓取區間首尾比較",
+      "source": "Yahoo Finance via yfinance",
+      "status": "ok",
+      "is_cached": false,
+      "last_attempt_at": "2026-11-21T23:53:02+08:00",
+      "last_success_at": "2026-11-21T23:53:02+08:00",
+      "last_error": null
     },
     "IXIC": {
+      "symbol": "^IXIC",
       "price": 22617.73,
       "daily_pct": -5.28,
-      "month_pct": -15.3
+      "month_pct": -15.3,
+      "data_date": "2026-11-20",
+      "last_trade_date": "2026-11-20",
+      "period_start": "2026-10-21",
+      "return_basis": "未調整收盤價；近月為抓取區間首尾比較",
+      "source": "Yahoo Finance via yfinance",
+      "status": "ok",
+      "is_cached": false,
+      "last_attempt_at": "2026-11-21T23:53:02+08:00",
+      "last_success_at": "2026-11-21T23:53:02+08:00",
+      "last_error": null
     }
   },
   "normalized_history": {
     "TWII": {
       "dates": [
-        "10-20",
-        "10-21",
-        "10-22",
-        "10-27",
-        "10-28",
-        "10-29",
-        "10-30",
-        "11-02",
-        "11-03",
-        "11-04",
-        "11-05",
-        "11-06",
-        "11-09",
-        "11-10",
-        "11-11",
-        "11-12",
-        "11-13",
-        "11-16",
-        "11-17",
-        "11-18",
-        "11-19",
-        "11-20"
+        "2026-10-20",
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06",
+        "2026-11-09",
+        "2026-11-10",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
       ],
       "values": [
         100.0,
@@ -76,33 +132,36 @@
         86.83,
         83.01,
         77.84
-      ]
+      ],
+      "data_date": "2026-11-20",
+      "status": "ok",
+      "is_cached": false
     },
     "TSMC": {
       "dates": [
-        "10-20",
-        "10-21",
-        "10-22",
-        "10-23",
-        "10-27",
-        "10-28",
-        "10-29",
-        "10-30",
-        "11-02",
-        "11-03",
-        "11-04",
-        "11-05",
-        "11-06",
-        "11-09",
-        "11-10",
-        "11-11",
-        "11-12",
-        "11-13",
-        "11-16",
-        "11-17",
-        "11-18",
-        "11-19",
-        "11-20"
+        "2026-10-20",
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06",
+        "2026-11-09",
+        "2026-11-10",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
       ],
       "values": [
         100.0,
@@ -128,33 +187,36 @@
         90.44,
         87.32,
         83.16
-      ]
+      ],
+      "data_date": "2026-11-20",
+      "status": "ok",
+      "is_cached": false
     },
     "SOX": {
       "dates": [
-        "10-21",
-        "10-22",
-        "10-23",
-        "10-26",
-        "10-27",
-        "10-28",
-        "10-29",
-        "10-30",
-        "11-02",
-        "11-03",
-        "11-04",
-        "11-05",
-        "11-06",
-        "11-09",
-        "11-10",
-        "11-11",
-        "11-12",
-        "11-13",
-        "11-16",
-        "11-17",
-        "11-18",
-        "11-19",
-        "11-20"
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06",
+        "2026-11-09",
+        "2026-11-10",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
       ],
       "values": [
         100.0,
@@ -180,33 +242,36 @@
         83.9,
         81.87,
         73.08
-      ]
+      ],
+      "data_date": "2026-11-20",
+      "status": "ok",
+      "is_cached": false
     },
     "NVDA": {
       "dates": [
-        "10-21",
-        "10-22",
-        "10-23",
-        "10-26",
-        "10-27",
-        "10-28",
-        "10-29",
-        "10-30",
-        "11-02",
-        "11-03",
-        "11-04",
-        "11-05",
-        "11-06",
-        "11-09",
-        "11-10",
-        "11-11",
-        "11-12",
-        "11-13",
-        "11-16",
-        "11-17",
-        "11-18",
-        "11-19",
-        "11-20"
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06",
+        "2026-11-09",
+        "2026-11-10",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
       ],
       "values": [
         100.0,
@@ -232,33 +297,36 @@
         68.01,
         65.77,
         56.55
-      ]
+      ],
+      "data_date": "2026-11-20",
+      "status": "ok",
+      "is_cached": false
     },
     "IXIC": {
       "dates": [
-        "10-21",
-        "10-22",
-        "10-23",
-        "10-26",
-        "10-27",
-        "10-28",
-        "10-29",
-        "10-30",
-        "11-02",
-        "11-03",
-        "11-04",
-        "11-05",
-        "11-06",
-        "11-09",
-        "11-10",
-        "11-11",
-        "11-12",
-        "11-13",
-        "11-16",
-        "11-17",
-        "11-18",
-        "11-19",
-        "11-20"
+        "2026-10-21",
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06",
+        "2026-11-09",
+        "2026-11-10",
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
       ],
       "values": [
         100.0,
@@ -284,16 +352,27 @@
         91.49,
         89.43,
         84.7
-      ]
+      ],
+      "data_date": "2026-11-20",
+      "status": "ok",
+      "is_cached": false
     }
   },
   "tw_margin": {
-    "balance_billion": null,
-    "daily_diff_billion": null,
+    "balance_billion": 4352.27,
+    "daily_diff_billion": -491.41,
+    "previous_balance_billion": 4843.68,
+    "unit": "億元",
     "est_maintenance_ratio": null,
-    "data_date": null,
-    "note": "TWSE 資料抓取失敗：Expecting value: line 1 column 1 (char 0)",
-    "status": "unavailable"
+    "data_date": "2026-11-20",
+    "source": "TWSE 信用交易統計",
+    "status": "ok",
+    "note": "上市市場融資金額，原始單位為仟元；今日餘額可能於後續調帳修正。融資維持率無獨立資料，因此不估算。",
+    "source_url": "https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN?response=json&selectType=ALL",
+    "is_cached": false,
+    "last_attempt_at": "2026-11-21T23:53:03+08:00",
+    "last_success_at": "2026-11-21T23:53:03+08:00",
+    "last_error": null
   },
   "treasury_yields": {
     "maturities": [
@@ -311,84 +390,45 @@
       5.31
     ],
     "one_month_ago": [
-      4.25,
-      4.81,
-      4.95,
-      5.13,
+      4.26,
+      4.79,
+      4.94,
+      5.12,
       5.42
     ],
     "spread_10y_2y": 0.29,
     "data_date": "2026-11-20",
-    "status": "ok"
+    "comparison_date": "2026-10-20",
+    "source": "U.S. Department of the Treasury",
+    "status": "ok",
+    "is_cached": false,
+    "last_attempt_at": "2026-11-21T23:53:04+08:00",
+    "last_success_at": "2026-11-21T23:53:04+08:00",
+    "last_error": null,
+    "note": "殖利率單位為%；10Y−2Y 利差單位為百分點。比較期取資料日往前一個月當日或之前最近有效資料。"
   },
   "fedwatch_dec": {
-    "data_status": "static_sample_not_realtime",
-    "meeting_date": "12月 FOMC 利率決議",
-    "scenarios": [
-      "降息 1 碼 (25bps)",
-      "維持利率不變",
-      "升息 1 碼 (25bps)"
-    ],
-    "probabilities": [
-      68.5,
-      31.5,
-      0.0
-    ],
-    "implied_rate_change_bps": -17.1
+    "data_status": "unavailable",
+    "meeting_date": null,
+    "scenarios": [],
+    "probabilities": [],
+    "implied_rate_change_bps": null,
+    "source": null,
+    "data_date": null,
+    "note": "尚未接入可驗證的利率機率來源。"
   },
   "short_interest_top_tech": {
-    "data_status": "static_sample_not_realtime",
-    "items": [
-      {
-        "ticker": "NVDA",
-        "short_float_pct": 1.15,
-        "days_to_cover": 0.9,
-        "trend": "持平"
-      },
-      {
-        "ticker": "TSLA",
-        "short_float_pct": 3.42,
-        "days_to_cover": 1.4,
-        "trend": "微增"
-      },
-      {
-        "ticker": "AMD",
-        "short_float_pct": 2.85,
-        "days_to_cover": 1.8,
-        "trend": "下降"
-      },
-      {
-        "ticker": "SMCI",
-        "short_float_pct": 14.6,
-        "days_to_cover": 2.6,
-        "trend": "顯著上升"
-      }
-    ]
+    "data_status": "unavailable",
+    "items": [],
+    "source": null,
+    "data_date": null,
+    "note": "尚未接入可驗證的未平倉空單來源。"
   },
   "analyst_quant_report": {
-    "data_status": "static_sample_not_realtime",
-    "items": [
-      {
-        "institution": "Goldman Sachs (高盛)",
-        "tech_valuation_view": "偏高但具獲利支撐",
-        "target_forward_pe": "26x - 28x",
-        "defensive_allocation_pct": 30,
-        "strategy_summary": "減碼高本益比純軟體股，轉向具現金流護城河的AI基建與公用事業防禦組合。"
-      },
-      {
-        "institution": "Morgan Stanley (摩根士丹利)",
-        "tech_valuation_view": "面臨估值倍數修正壓力",
-        "target_forward_pe": "23x - 25x",
-        "defensive_allocation_pct": 40,
-        "strategy_summary": "建議提高醫療保健與必須消費權重，利用選擇權領口策略（Collar）對沖財報季波動。"
-      },
-      {
-        "institution": "Bank of America (美國銀行)",
-        "tech_valuation_view": "中性偏謹慎（泡沫警戒）",
-        "target_forward_pe": "24x - 26x",
-        "defensive_allocation_pct": 35,
-        "strategy_summary": "科技巨頭資本支出回報率受檢視，建議增持短天期美債與高股息價值股。"
-      }
-    ]
+    "data_status": "unavailable",
+    "items": [],
+    "source": null,
+    "data_date": null,
+    "note": "尚未接入可查核的機構研究報告。"
   }
 }
