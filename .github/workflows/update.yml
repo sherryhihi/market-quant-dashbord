@@ -1,0 +1,101 @@
+name: Auto Update Market Dashboard
+
+on:
+  schedule:
+    # 台股盤後：台灣時間週一至週五 17:30（UTC 09:30）
+    - cron: '30 9 * * 1-5'
+
+    # 美股盤後：台灣時間週二至週六 06:30（UTC 週一至週五 22:30）
+    - cron: '30 22 * * 1-5'
+
+  # 允許在 GitHub Actions 頁面手動觸發
+  workflow_dispatch:
+
+# 僅授予寫入 repository 內容所需的最低權限
+permissions:
+  contents: write
+
+# 避免兩次排程重疊或手動觸發時同時寫入 data.json
+concurrency:
+  group: market-data-update
+  cancel-in-progress: false
+
+jobs:
+  update-data:
+    name: Fetch market data and update data.json
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # 取得完整 Git 歷史，避免淺複製造成 push 問題
+          fetch-depth: 0
+          # 保留 GitHub Token 憑證，供後續 git push 使用
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          # 若 repository 有 requirements.txt，可啟用 pip 快取
+          cache: 'pip'
+          cache-dependency-path: |
+            requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install yfinance pandas requests lxml
+
+      - name: Run market data script
+        env:
+          PYTHONUNBUFFERED: '1'
+          TZ: 'Asia/Taipei'
+        run: |
+          python fetch_market_data.py
+
+      - name: Check for data.json changes
+        id: data_changes
+        run: |
+          if [[ -n "$(git status --porcelain -- data.json)" ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No changes detected in data.json."
+          fi
+
+      - name: Configure Git identity
+        if: steps.data_changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit updated data
+        if: steps.data_changes.outputs.changed == 'true'
+        run: |
+          git add data.json
+          git commit -m "chore: auto-update market data [skip ci]"
+
+      - name: Push updated data
+        if: steps.data_changes.outputs.changed == 'true'
+        run: |
+          git push origin HEAD
+
+      - name: Summary
+        if: always()
+        run: |
+          if [[ "${{ steps.data_changes.outputs.changed }}" == "true" ]]; then
+            echo "### ✅ Market data updated" >> "$GITHUB_STEP_SUMMARY"
+            echo "- \`data.json\` has been committed and pushed." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "### ℹ️ No market data changes" >> "$GITHUB_STEP_SUMMARY"
+            echo "- \`data.json\` was unchanged; no commit was created." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Failure notice
+        if: failure()
+        run: |
+          echo "### ❌ Market data update failed" >> "$GITHUB_STEP_SUMMARY"
+          echo "Please inspect the Actions logs for API, parsing, or network errors." >> "$GITHUB_STEP_SUMMARY"
