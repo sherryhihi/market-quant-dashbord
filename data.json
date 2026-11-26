@@ -1,6 +1,6 @@
 {
   "schema_version": 5,
-  "last_updated": "2026-11-26T07:18:30+08:00",
+  "last_updated": "2026-11-26T18:30:33+08:00",
   "market_performance": {
     "SPX": {
       "symbol": "^GSPC",
@@ -16,9 +16,9 @@
       "status": "ok",
       "note": "未調整價格資料；近月為所選近月區間首尾比較。交易時段內最後一筆日線可能尚未定案，不保證為即時行情。",
       "is_cached": false,
-      "retrieved_at": "2026-11-26T07:18:16+08:00",
-      "last_attempt_at": "2026-11-26T07:18:16+08:00",
-      "last_success_at": "2026-11-26T07:18:16+08:00",
+      "retrieved_at": "2026-11-26T18:30:22+08:00",
+      "last_attempt_at": "2026-11-26T18:30:22+08:00",
+      "last_success_at": "2026-11-26T18:30:22+08:00",
       "last_error": null
     },
     "IXIC": {
@@ -35,9 +35,9 @@
       "status": "ok",
       "note": "未調整價格資料；近月為所選近月區間首尾比較。交易時段內最後一筆日線可能尚未定案，不保證為即時行情。",
       "is_cached": false,
-      "retrieved_at": "2026-11-26T07:18:17+08:00",
-      "last_attempt_at": "2026-11-26T07:18:17+08:00",
-      "last_success_at": "2026-11-26T07:18:17+08:00",
+      "retrieved_at": "2026-11-26T18:30:23+08:00",
+      "last_attempt_at": "2026-11-26T18:30:23+08:00",
+      "last_success_at": "2026-11-26T18:30:23+08:00",
       "last_error": null
     },
     "NVDA": {
@@ -54,9 +54,9 @@
       "status": "ok",
       "note": "未調整價格資料；近月為所選近月區間首尾比較。交易時段內最後一筆日線可能尚未定案，不保證為即時行情。",
       "is_cached": false,
-      "retrieved_at": "2026-11-26T07:18:18+08:00",
-      "last_attempt_at": "2026-11-26T07:18:18+08:00",
-      "last_success_at": "2026-11-26T07:18:18+08:00",
+      "retrieved_at": "2026-11-26T18:30:23+08:00",
+      "last_attempt_at": "2026-11-26T18:30:23+08:00",
+      "last_success_at": "2026-11-26T18:30:23+08:00",
       "last_error": null
     },
     "AMD": {
@@ -73,9 +73,9 @@
       "status": "ok",
       "note": "未調整價格資料；近月為所選近月區間首尾比較。交易時段內最後一筆日線可能尚未定案，不保證為即時行情。",
       "is_cached": false,
-      "retrieved_at": "2026-11-26T07:18:19+08:00",
-      "last_attempt_at": "2026-11-26T07:18:19+08:00",
-      "last_success_at": "2026-11-26T07:18:19+08:00",
+      "retrieved_at": "2026-11-26T18:30:24+08:00",
+      "last_attempt_at": "2026-11-26T18:30:24+08:00",
+      "last_success_at": "2026-11-26T18:30:24+08:00",
       "last_error": null
     },
     "SOX": {
@@ -92,66 +92,66 @@
       "status": "ok",
       "note": "未調整價格資料；近月為所選近月區間首尾比較。交易時段內最後一筆日線可能尚未定案，不保證為即時行情。",
       "is_cached": false,
-      "retrieved_at": "2026-11-26T07:18:20+08:00",
-      "last_attempt_at": "2026-11-26T07:18:20+08:00",
-      "last_success_at": "2026-11-26T07:18:20+08:00",
+      "retrieved_at": "2026-11-26T18:30:25+08:00",
+      "last_attempt_at": "2026-11-26T18:30:25+08:00",
+      "last_success_at": "2026-11-26T18:30:25+08:00",
       "last_error": null
     },
     "VIX": {
       "symbol": "^VIX",
-      "price": 28.29,
-      "daily_pct": 7.32,
-      "month_pct": 53.83,
-      "period_20d_pct": 67.3,
-      "period_20d_start": "2026-10-28",
+      "price": 26.9,
+      "daily_pct": -4.91,
+      "month_pct": 46.28,
+      "period_20d_pct": 56.4,
+      "period_20d_start": "2026-10-29",
       "period_start": "2026-10-26",
-      "data_date": "2026-11-25",
-      "last_trade_date": "2026-11-25",
+      "data_date": "2026-11-26",
+      "last_trade_date": "2026-11-26",
       "source": "Yahoo Finance via yfinance",
       "status": "ok",
       "note": "未調整價格資料；近月為所選近月區間首尾比較。交易時段內最後一筆日線可能尚未定案，不保證為即時行情。",
       "is_cached": false,
-      "retrieved_at": "2026-11-26T07:18:20+08:00",
-      "last_attempt_at": "2026-11-26T07:18:20+08:00",
-      "last_success_at": "2026-11-26T07:18:20+08:00",
+      "retrieved_at": "2026-11-26T18:30:25+08:00",
+      "last_attempt_at": "2026-11-26T18:30:25+08:00",
+      "last_success_at": "2026-11-26T18:30:25+08:00",
       "last_error": null
     },
     "TWII": {
       "symbol": "^TWII",
-      "price": 38195.43,
-      "daily_pct": -4.8,
-      "month_pct": -17.14,
-      "period_20d_pct": -18.79,
-      "period_20d_start": "2026-10-28",
+      "price": 39151.81,
+      "daily_pct": 2.5,
+      "month_pct": -15.07,
+      "period_20d_pct": -15.56,
+      "period_20d_start": "2026-10-29",
       "period_start": "2026-10-27",
-      "data_date": "2026-11-25",
-      "last_trade_date": "2026-11-25",
-      "source": "Yahoo Finance via yfinance",
-      "status": "cached",
-      "note": "未調整價格資料；近月為所選近月區間首尾比較。交易時段內最後一筆日線可能尚未定案，不保證為即時行情。",
-      "is_cached": true,
-      "retrieved_at": "2026-11-25T18:30:08+08:00",
-      "last_attempt_at": "2026-11-26T07:18:21+08:00",
-      "last_success_at": "2026-11-25T18:30:08+08:00",
-      "last_error": "來源回傳較舊日期，保留既有快照。"
-    },
-    "TSMC": {
-      "symbol": "2330.TW",
-      "price": 2150.0,
-      "daily_pct": -3.59,
-      "month_pct": -10.42,
-      "period_20d_pct": -11.34,
-      "period_20d_start": "2026-10-28",
-      "period_start": "2026-10-27",
-      "data_date": "2026-11-25",
-      "last_trade_date": "2026-11-25",
+      "data_date": "2026-11-26",
+      "last_trade_date": "2026-11-26",
       "source": "Yahoo Finance via yfinance",
       "status": "ok",
       "note": "未調整價格資料；近月為所選近月區間首尾比較。交易時段內最後一筆日線可能尚未定案，不保證為即時行情。",
       "is_cached": false,
-      "retrieved_at": "2026-11-26T07:18:22+08:00",
-      "last_attempt_at": "2026-11-26T07:18:22+08:00",
-      "last_success_at": "2026-11-26T07:18:22+08:00",
+      "retrieved_at": "2026-11-26T18:30:26+08:00",
+      "last_attempt_at": "2026-11-26T18:30:26+08:00",
+      "last_success_at": "2026-11-26T18:30:26+08:00",
+      "last_error": null
+    },
+    "TSMC": {
+      "symbol": "2330.TW",
+      "price": 2145.0,
+      "daily_pct": -0.23,
+      "month_pct": -10.62,
+      "period_20d_pct": -11.18,
+      "period_20d_start": "2026-10-29",
+      "period_start": "2026-10-27",
+      "data_date": "2026-11-26",
+      "last_trade_date": "2026-11-26",
+      "source": "Yahoo Finance via yfinance",
+      "status": "ok",
+      "note": "未調整價格資料；近月為所選近月區間首尾比較。交易時段內最後一筆日線可能尚未定案，不保證為即時行情。",
+      "is_cached": false,
+      "retrieved_at": "2026-11-26T18:30:26+08:00",
+      "last_attempt_at": "2026-11-26T18:30:26+08:00",
+      "last_success_at": "2026-11-26T18:30:26+08:00",
       "last_error": null
     }
   },
@@ -455,7 +455,8 @@
         "2026-11-20",
         "2026-11-23",
         "2026-11-24",
-        "2026-11-25"
+        "2026-11-25",
+        "2026-11-26"
       ],
       "values": [
         100.0,
@@ -480,9 +481,10 @@
         195.16,
         144.75,
         143.34,
-        153.83
+        153.83,
+        146.28
       ],
-      "data_date": "2026-11-25",
+      "data_date": "2026-11-26",
       "status": "ok",
       "is_cached": false
     },
@@ -509,7 +511,8 @@
         "2026-11-20",
         "2026-11-23",
         "2026-11-24",
-        "2026-11-25"
+        "2026-11-25",
+        "2026-11-26"
       ],
       "values": [
         100.0,
@@ -533,11 +536,12 @@
         78.17,
         79.86,
         87.04,
-        82.86
+        82.86,
+        84.93
       ],
-      "data_date": "2026-11-25",
-      "status": "cached",
-      "is_cached": true
+      "data_date": "2026-11-26",
+      "status": "ok",
+      "is_cached": false
     },
     "TSMC": {
       "dates": [
@@ -562,7 +566,8 @@
         "2026-11-20",
         "2026-11-23",
         "2026-11-24",
-        "2026-11-25"
+        "2026-11-25",
+        "2026-11-26"
       ],
       "values": [
         100.0,
@@ -586,9 +591,10 @@
         83.33,
         84.58,
         92.92,
-        89.58
+        89.58,
+        89.38
       ],
-      "data_date": "2026-11-25",
+      "data_date": "2026-11-26",
       "status": "ok",
       "is_cached": false
     }
@@ -604,9 +610,9 @@
     "note": "上市市場融資金額；原始仟元換算為億元。未取得獨立融資維持率資料，故不估算。",
     "source_url": "https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN?response=json&selectType=ALL",
     "is_cached": false,
-    "retrieved_at": "2026-11-26T07:18:23+08:00",
-    "last_attempt_at": "2026-11-26T07:18:23+08:00",
-    "last_success_at": "2026-11-26T07:18:23+08:00",
+    "retrieved_at": "2026-11-26T18:30:27+08:00",
+    "last_attempt_at": "2026-11-26T18:30:27+08:00",
+    "last_success_at": "2026-11-26T18:30:27+08:00",
     "last_error": null
   },
   "treasury_yields": {
@@ -694,9 +700,9 @@
     "status": "ok",
     "note": "殖利率單位為%，利差為百分點。比較期為往前一個月當日或之前最近有效資料。",
     "is_cached": false,
-    "retrieved_at": "2026-11-26T07:18:24+08:00",
-    "last_attempt_at": "2026-11-26T07:18:24+08:00",
-    "last_success_at": "2026-11-26T07:18:24+08:00",
+    "retrieved_at": "2026-11-26T18:30:27+08:00",
+    "last_attempt_at": "2026-11-26T18:30:27+08:00",
+    "last_success_at": "2026-11-26T18:30:27+08:00",
     "last_error": null
   },
   "rate_market_monitor": {
@@ -705,8 +711,8 @@
     "status": "ok",
     "is_cached": false,
     "data_date": "2026-11-25",
-    "last_attempt_at": "2026-11-26T07:18:24+08:00",
-    "last_success_at": "2026-11-26T07:18:24+08:00",
+    "last_attempt_at": "2026-11-26T18:30:27+08:00",
+    "last_success_at": "2026-11-26T18:30:27+08:00",
     "last_error": null,
     "yield_3m_pct": 4.34,
     "yield_2y_pct": 4.61,
@@ -736,9 +742,9 @@
         "input_method": "automatic",
         "status": "ok",
         "is_cached": false,
-        "retrieved_at": "2026-11-26T07:18:24+08:00",
-        "last_attempt_at": "2026-11-26T07:18:24+08:00",
-        "last_success_at": "2026-11-26T07:18:24+08:00",
+        "retrieved_at": "2026-11-26T18:30:28+08:00",
+        "last_attempt_at": "2026-11-26T18:30:28+08:00",
+        "last_success_at": "2026-11-26T18:30:28+08:00",
         "last_error": null,
         "note": "來源未提供可辨識的目標價彙總更新日期。抓取時間不等於報告日期。目標價相對空間不是保證報酬。"
       },
@@ -759,9 +765,9 @@
         "input_method": "automatic",
         "status": "ok",
         "is_cached": false,
-        "retrieved_at": "2026-11-26T07:18:26+08:00",
-        "last_attempt_at": "2026-11-26T07:18:26+08:00",
-        "last_success_at": "2026-11-26T07:18:26+08:00",
+        "retrieved_at": "2026-11-26T18:30:29+08:00",
+        "last_attempt_at": "2026-11-26T18:30:29+08:00",
+        "last_success_at": "2026-11-26T18:30:29+08:00",
         "last_error": null,
         "note": "來源未提供可辨識的目標價彙總更新日期。抓取時間不等於報告日期。目標價相對空間不是保證報酬。"
       },
@@ -782,9 +788,9 @@
         "input_method": "automatic",
         "status": "ok",
         "is_cached": false,
-        "retrieved_at": "2026-11-26T07:18:27+08:00",
-        "last_attempt_at": "2026-11-26T07:18:27+08:00",
-        "last_success_at": "2026-11-26T07:18:27+08:00",
+        "retrieved_at": "2026-11-26T18:30:30+08:00",
+        "last_attempt_at": "2026-11-26T18:30:30+08:00",
+        "last_success_at": "2026-11-26T18:30:30+08:00",
         "last_error": null,
         "note": "來源未提供可辨識的目標價彙總更新日期。抓取時間不等於報告日期。目標價相對空間不是保證報酬。"
       },
@@ -805,9 +811,9 @@
         "input_method": "automatic",
         "status": "ok",
         "is_cached": false,
-        "retrieved_at": "2026-11-26T07:18:28+08:00",
-        "last_attempt_at": "2026-11-26T07:18:28+08:00",
-        "last_success_at": "2026-11-26T07:18:28+08:00",
+        "retrieved_at": "2026-11-26T18:30:31+08:00",
+        "last_attempt_at": "2026-11-26T18:30:31+08:00",
+        "last_success_at": "2026-11-26T18:30:31+08:00",
         "last_error": null,
         "note": "來源未提供可辨識的目標價彙總更新日期。抓取時間不等於報告日期。目標價相對空間不是保證報酬。"
       }
